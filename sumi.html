@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Piece of Forever</title>
+
+<style>
+:root {
+  --night: #080b20;
+  --lavender: #d8c8ff;
+  --gold: #ffe7b2;
+  --cream: #fff8ef;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(ellipse at 50% 15%, #27254f 0%, #10152e 42%, #050815 100%);
+  overflow-x: hidden;
+}
+
+#sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%,100% { opacity: .2; transform: scale(.7); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  opacity: 0;
+  background: linear-gradient(90deg, white, transparent);
+  transform: rotate(-35deg);
+  animation: shooting 6s linear infinite;
+}
+
+@keyframes shooting {
+  0% { transform: translate(0,0) rotate(-35deg); opacity: 0; }
+  5% { opacity: .9; }
+  20% { transform: translate(-230px,150px) rotate(-35deg); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  width: min(950px, 92%);
+  margin: auto;
+  padding: 45px 0 70px;
+}
+
+header { text-align: center; padding: 25px 8px; }
+
+.eyebrow {
+  color: var(--lavender);
+  font: 11px Arial, sans-serif;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2.3rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: normal;
+  color: #fff2dd;
+  text-shadow: 0 0 35px #d1b4ff35;
+  margin: 18px 0;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+p {
+  color: #d1d4e8;
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.subtitle {
+  max-width: 570px;
+  margin: auto;
+}
+
+.music-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: 1px solid #ffffff25;
+  border-radius: 999px;
+  margin-top: 20px;
+  color: #e7ddff;
+  font: 12px Arial, sans-serif;
+  background: #ffffff08;
+}
+
+.music-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d7c6ff;
+  box-shadow: 0 0 12px #c8b0ff;
+  animation: twinkle 1.5s infinite;
+}
+
+.panel {
+  position: relative;
+  padding: clamp(22px, 5vw, 42px);
+  margin: 24px 0;
+  border: 1px solid #ffffff20;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #ffffff0d, #ffffff04);
+  box-shadow: 0 24px 80px #0004;
+  backdrop-filter: blur(10px);
+}
+
+.center { text-align: center; }
+
+.symbol {
+  font-size: 34px;
+  color: var(--gold);
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  font: 14px Arial, sans-serif;
+  transition: transform .2s, box-shadow .2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.primary {
+  padding: 15px 24px;
+  border-radius: 999px;
+  background: linear-gradient(110deg, #e4d7ff, #ffe8ba);
+  color: #17152b;
+  box-shadow: 0 8px 30px #c9b7ff22;
+}
+
+.secondary {
+  padding: 12px 19px;
+  border-radius: 999px;
+  background: #ffffff0a;
+  border: 1px solid #ffffff35;
+  color: #f5edff;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+#voiceStatus {
+  min-height: 24px;
+  margin-top: 16px;
+  font: 13px Arial, sans-serif;
+  color: #e2d8ff;
+}
+
+.hint {
+  font: 12px/1.7 Arial, sans-serif;
+  color: #aeb4d3;
+}
+
+#textFallback {
+  display: none;
+  max-width: 500px;
+  margin: 20px auto 0;
+}
+
+textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ffffff30;
+  background: #080b20;
+  color: white;
+  font: 15px/1.6 Arial, sans-serif;
+}
+
+textarea::placeholder { color: #9da4c6; }
+
+#journey {
+  display: none;
+  animation: fadeUp 1s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.journey-heading {
+  text-align: center;
+  padding: 15px 0;
+}
+
+.progress {
+  width: min(260px, 80%);
+  height: 3px;
+  background: #ffffff20;
+  margin: 22px auto;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#progressFill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #c5aaff, #ffe5a9);
+  transition: width .5s;
+}
+
+.memory-card {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  gap: clamp(20px,4vw,40px);
+  align-items: center;
+  position: relative;
+}
+
+.photo-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.photo-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  min-height: 350px;
+  border: 1px solid #ffffff35;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(145deg,#1a2041,#090e25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 50px #0005;
+}
+
+.photo-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Shows full face and entire photo */
+  object-position: center;
+  display: block;
+}
+
+.photo-frame::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 10px;
+  border: 1px solid #d8c8ff45;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.photo-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Cloud Bubble positioned outside top-left diagonal of the card */
+.cloud-bubble-outer {
+  position: absolute;
+  top: -42px;
+  left: -32px;
+  z-index: 20;
+  background: linear-gradient(135deg, rgba(255, 248, 239, 0.96), rgba(216, 200, 255, 0.94));
+  border: 1.5px solid rgba(255, 231, 178, 0.9);
+  border-radius: 40px;
+  padding: 16px 22px;
+  color: #17152b;
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.45;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+  width: 250px;
+  min-height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: floatCloud 4.5s ease-in-out infinite;
+  backdrop-filter: blur(10px);
+}
+
+.cloud-bubble-outer::after {
+  content: "";
+  position: absolute;
+  bottom: -9px;
+  right: 28px;
+  width: 16px;
+  height: 16px;
+  background: inherit;
+  border-bottom: 1.5px solid rgba(255, 231, 178, 0.9);
+  border-right: 1.5px solid rgba(255, 231, 178, 0.9);
+  transform: rotate(45deg);
+}
+
+@keyframes floatCloud {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-7px) rotate(1deg); }
+}
+
+/* Dynamic Floating Reply Cloud Bubbles (Random positions) */
+.random-patti-reply {
+  position: fixed;
+  z-index: 9999;
+  background: linear-gradient(135deg, #fff7ea, #e2d3ff);
+  border: 2px solid #ffe1a0;
+  border-radius: 35px;
+  padding: 16px 22px;
+  color: #120e2e;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.5;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+  max-width: 280px;
+  text-align: center;
+  animation: popFloat 7s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes popFloat {
+  0% { opacity: 0; transform: scale(0.7) translateY(15px); }
+  12% { opacity: 1; transform: scale(1) translateY(0); }
+  85% { opacity: 1; transform: scale(1) translateY(-10px); }
+  100% { opacity: 0; transform: scale(0.9) translateY(-25px); }
+}
+
+.memory-copy { padding: 10px 0; }
+
+.chapter {
+  font: 10px Arial, sans-serif;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.memory-copy h2 {
+  margin: 17px 0;
+  font-size: clamp(1.8rem,4vw,2.6rem);
+}
+
+.memory-copy p {
+  white-space: pre-line;
+  font-size: 1.04rem;
+}
+
+.signature {
+  color: #e6d6ff;
+  font-style: italic;
+  line-height: 1.8;
+  margin-top: 20px;
+}
+
+.patti-post-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #ffffff20;
+}
+
+.patti-input-box textarea {
+  min-height: 70px;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ffffff20;
+}
+
+#finale {
+  display: none;
+  text-align: center;
+  animation: fadeUp 1.4s ease both;
+}
+
+.heart {
+  font-size: 38px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+.fineprint {
+  font: 11px/1.7 Arial, sans-serif;
+  color: #9ea5c7;
+  text-align: center;
+  max-width: 560px;
+  margin: 28px auto 0;
+}
+
+.confetti {
+  position: fixed;
+  z-index: 5;
+  top: -20px;
+  width: 5px;
+  height: 9px;
+  pointer-events: none;
+  animation: fall 5s linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(700deg); opacity: 0; }
+}
+
+/* Audio Overlay */
+#audioOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 21, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.overlay-box {
+  background: linear-gradient(145deg, #ffffff12, #ffffff05);
+  border: 1px solid #ffffff30;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px #000;
+  max-width: 420px;
+}
+
+@media (max-width: 768px) {
+  main { padding-top: 20px; }
+  .memory-card { grid-template-columns: 1fr; }
+  .cloud-bubble-outer {
+    top: -25px;
+    left: -10px;
+    width: 200px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Audio Overlay -->
+<div id="audioOverlay">
+  <div class="overlay-box">
+    <div class="symbol">✧</div>
+    <h2 style="font-size: 1.8rem; margin: 15px 0;">A Little Piece of Forever</h2>
+    <p class="hint" style="margin-bottom: 25px;">Click below to enter with gentle music playing.</p>
+    <button class="primary" id="startAudioBtn">Enter & Play Music</button>
+  </div>
+</div>
+
+<div id="sky"></div>
+
+<main>
+  <header>
+    <div class="eyebrow">A little pocket of starlight</div>
+    <h1>Some moments find<br>their way home.</h1>
+    <p class="subtitle">
+      Take a slow breath. Let your heart speak in its own words.
+      There is no right way to do this.
+    </p>
+    <div class="music-status">
+      <span class="music-dot"></span>
+      <span id="musicLabel">Soft music is playing</span>
+    </div>
+  </header>
+
+  <section class="panel center" id="welcome">
+    <div class="symbol">✧</div>
+    <h2>Whenever you're ready</h2>
+    <p>
+      There is no script to follow. Just say whatever is on your mind,
+      in the language that feels most like you.
+    </p>
+
+    <div class="actions">
+      <button class="primary" id="recordBtn">♡ &nbsp; Begin speaking</button>
+      <button class="secondary" id="stopBtn" hidden>Finish speaking</button>
+    </div>
+
+    <div id="voiceStatus" aria-live="polite">
+      Your words stay in this page; nothing is uploaded.
+    </div>
+
+    <div id="textFallback">
+      <p class="hint">If voice recognition isn't available, type what you said here instead.</p>
+      <textarea id="manualText" placeholder="Write naturally, in any language..."></textarea>
+      <div class="actions">
+        <button class="primary" id="checkTextBtn">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="journey">
+    <div class="journey-heading">
+      <div class="eyebrow">A little love, just for you</div>
+      <div class="progress"><div id="progressFill"></div></div>
+    </div>
+
+    <section class="panel">
+      <div class="memory-card">
+        <!-- Photo Wrapper with Cloud Outside Top-Left Diagonal -->
+        <div class="photo-wrapper">
+          <div class="cloud-bubble-outer" id="cloudMessageDisplay">
+            "En chellakutty... enakku romba sandhosham da. Nee saadhichitta!"
+          </div>
+          <div class="photo-frame">
+            <img id="memoryImage" src="image1.png" alt="Cherished photograph">
+          </div>
+        </div>
+
+        <div class="memory-copy">
+          <div class="chapter" id="chapter"></div>
+          <h2 id="memoryTitle"></h2>
+          <p id="memoryText"></p>
+          <div class="signature" id="signature"></div>
+          
+          <!-- Message to Patti Section -->
+          <div class="patti-post-section">
+            <p class="hint" style="margin-bottom: 6px;">Tell something to Patti:</p>
+            <div class="patti-input-box">
+              <textarea id="pattiMessageInput" placeholder="Type your news or message to Patti here..."></textarea>
+              <button class="secondary" id="sendToPattiBtn" style="width: 100%;">Send to Patti ☁️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="primary" id="continueBtn">Continue &nbsp; →</button>
+      </div>
+    </section>
+
+    <section id="finale" class="panel">
+      <!-- Centered Photo and One Last Wish Section -->
+      <div style="max-width: 350px; margin: 0 auto 30px; border-radius: 18px; overflow: hidden; border: 1px solid #ffffff35; box-shadow: 0 10px 40px #0005;">
+        <img src="finalimage.png" alt="Patti Blessing" style="width: 100%; height: auto; display: block;">
+      </div>
+
+      <div class="symbol">✧</div>
+      <div class="eyebrow" style="margin-bottom: 10px;">One Last Wish</div>
+      <h2 style="margin-bottom: 15px;">En thangathukku eppavum nalladhe nadakkum...</h2>
+      <p style="margin-bottom: 20px;">
+        Naan koodave irupen! Eppovum santhoshama iru. Un vaazhkaila nalla vishayangal nadakkattum. Unakku nalla velai, nalla aarokkiyam, nimmadhi, anbu ellame kidaikkattum. Nee ninaikkira ella nalla kanavugalum nijamaagattum. Naan eppovum unakku kodutha anbum, aasigalum un kooda irukkum, en chellam!
+      </p>
+
+      <div class="heart" style="margin-top: 30px;">♡</div>
+      <div class="eyebrow">Held in every tomorrow</div>
+      <h2>May love walk beside you.</h2>
+      <p>
+        May you find courage for uncertain days, joy in the little things,
+        and people who see how special you are. May your hard work open
+        beautiful doors, and may you always remember how deeply you are loved.
+      </p>
+      <p class="signature">Some bonds are too beautiful to end.</p>
+      <div class="actions">
+        <button class="secondary" id="replayBtn">Read again</button>
+      </div>
+    </section>
+  </section>
+
+  <p class="fineprint">
+    This is a small, imagined tribute made with love.
+  </p>
+</main>
+
+<script>
+/* STARFIELD */
+const sky = document.getElementById("sky");
+
+for (let i = 0; i < 120; i++) {
+  const star = document.createElement("i");
+  star.className = "star";
+  star.style.left = Math.random() * 100 + "%";
+  star.style.top = Math.random() * 100 + "%";
+  star.style.animationDelay = Math.random() * 4 + "s";
+  star.style.animationDuration = 2 + Math.random() * 4 + "s";
+  const size = Math.random() < .12 ? 3 : 1.4;
+  star.style.width = size + "px";
+  star.style.height = size + "px";
+  sky.appendChild(star);
+}
+
+for (let i = 0; i < 3; i++) {
+  const shooting = document.createElement("i");
+  shooting.className = "shooting-star";
+  shooting.style.left = 65 + Math.random() * 35 + "%";
+  shooting.style.top = Math.random() * 55 + "%";
+  shooting.style.animationDelay = Math.random() * 8 + "s";
+  sky.appendChild(shooting);
+}
+
+/* BACKGROUND MUSIC */
+let audioCtx = null;
+let masterGain = null;
+let musicTimer = null;
+let noteIndex = 0;
+
+const melody = [
+  261.63, 329.63, 392, 329.63,
+  293.66, 349.23, 440, 349.23,
+  261.63, 329.63, 392, 523.25,
+  440, 392, 329.63, 293.66
+];
+
+function playNote() {
+  if (!audioCtx || !masterGain) return;
+
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.value = melody[noteIndex % melody.length];
+
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.40, now + 0.2);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.6);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(now);
+  osc.stop(now + 2.7);
+
+  const chord = audioCtx.createOscillator();
+  const chordGain = audioCtx.createGain();
+  chord.type = "sine";
+  chord.frequency.value = melody[(noteIndex + 2) % melody.length] * 0.5;
+
+  chordGain.gain.setValueAtTime(0.0001, now);
+  chordGain.gain.exponentialRampToValueAtTime(0.18, now + 0.3);
+  chordGain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
+
+  chord.connect(chordGain);
+  chordGain.connect(masterGain);
+  chord.start(now);
+  chord.stop(now + 2.3);
+
+  noteIndex++;
+}
+
+document.getElementById("startAudioBtn").addEventListener("click", () => {
+  const overlay = document.getElementById("audioOverlay");
+  overlay.style.opacity = "0";
+  setTimeout(() => overlay.remove(), 500);
+
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.35;
+      masterGain.connect(audioCtx.destination);
+
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+
+      playNote();
+      musicTimer = setInterval(playNote, 1500);
+      document.getElementById("musicLabel").textContent = "Soft music is playing";
+    }
+  } catch (error) {}
+});
+
+/* VOICE RECOGNITION */
+const recordBtn = document.getElementById("recordBtn");
+const stopBtn = document.getElementById("stopBtn");
+const voiceStatus = document.getElementById("voiceStatus");
+const fallback = document.getElementById("textFallback");
+
+let recognition = null;
+let recording = false;
+let revealed = false;
+let transcript = "";
+
+const secretPatterns = [
+  /\bplaced\b/i,
+  /\bplacement\b/i,
+  /\bgot\s+(?:a\s+)?job\b/i,
+  /\bjob\s+(?:offer|selected)\b/i,
+  /\bselected\s+(?:for|in)\b/i,
+  /\bgot\s+selected\b/i,
+  /\bnaan\b.{0,35}\b(place|placed|placement|select|selected|job|kidach|kedach)\b/i,
+  /\b(place|placed|placement|select|selected|job|vela|velai)\b.{0,35}\b(aayitten|ayitten|aagitten|aachu|kedach|kidaich|kidaich|vandhuruchu)\b/i,
+  /\bcollege\b.{0,35}\b(job|placed|placement|selected)\b/i,
+  /\b(velai|velaya)\b.{0,35}\b(kidaich|kedach|kidaichiruch|kidaichuthu|kidaichuduchu)\b/i,
+  /\bkidachiruchu\b/i,
+  /\bkidaichiruchu\b/i,
+  /\bpaati\b/i,
+  /\bpatti\b/i,
+  /ப்ளேஸ்ட|பிளேஸ்மென்ட்|வேலை கிடைத்தது|வேலை கிடைச்சது|தேர்வாகிட்டேன்|வேலை கிடைத்துவிட்டது/i
+];
+
+function containsSecretPhrase(text) {
+  return secretPatterns.some(pattern => pattern.test(text || ""));
+}
+
+function revealJourney() {
+  if (revealed) return;
+
+  revealed = true;
+  recording = false;
+
+  try {
+    if (recognition) {
+      recognition.onresult = null;
+      recognition.onend = null;
+      recognition.stop();
+    }
+  } catch (error) {}
+
+  document.getElementById("welcome").style.display = "none";
+  document.getElementById("journey").style.display = "block";
+
+  renderStep();
+  makeConfetti();
+
+  document.getElementById("journey").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function setupRecognition() {
+  const SpeechRecognitionClass =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognitionClass) {
+    fallback.style.display = "block";
+    voiceStatus.textContent =
+      "Voice recognition is not supported here. You can type instead.";
+    return;
+  }
+
+  recognition = new SpeechRecognitionClass();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = "en-IN";
+
+  recognition.onstart = () => {
+    recording = true;
+    recordBtn.style.display = "none";
+    stopBtn.hidden = false;
+    voiceStatus.textContent =
+      "Listening… speak naturally, then tap Finish speaking.";
+  };
+
+  recognition.onresult = event => {
+    let currentTranscript = "";
+    for (let i = 0; i < event.results.length; i++) {
+      currentTranscript += " " + event.results[i][0].transcript;
+    }
+    transcript = currentTranscript;
+
+    if (containsSecretPhrase(transcript)) {
+      revealJourney();
+    }
+  };
+
+  recognition.onerror = event => {
+    if (event.error === "not-allowed") {
+      voiceStatus.textContent =
+        "Microphone access is blocked. Allow it in browser settings or type instead.";
+      fallback.style.display = "block";
+    } else {
+      voiceStatus.textContent =
+        "We couldn't hear that clearly. Try again or type instead.";
+    }
+  };
+
+  recognition.onend = () => {
+    if (revealed) return;
+
+    recording = false;
+    recordBtn.style.display = "inline-block";
+    stopBtn.hidden = true;
+
+    if (containsSecretPhrase(transcript)) {
+      revealJourney();
+    } else {
+      voiceStatus.textContent =
+        "You can try again, or use the text box below.";
+      fallback.style.display = "block";
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch (error) {
+    fallback.style.display = "block";
+    voiceStatus.textContent =
+      "Could not start the microphone. Please type instead.";
+  }
+}
+
+recordBtn.addEventListener("click", () => {
+  transcript = "";
+  fallback.style.display = "block";
+  setupRecognition();
+});
+
+stopBtn.addEventListener("click", () => {
+  if (recognition && recording) {
+    voiceStatus.textContent = "Checking your words…";
+    recording = false;
+    try { recognition.stop(); } catch (error) {}
+  }
+});
+
+document.getElementById("checkTextBtn").addEventListener("click", () => {
+  const text = document.getElementById("manualText").value;
+
+  if (containsSecretPhrase(text)) {
+    revealJourney();
+  } else {
+    voiceStatus.textContent =
+      "Try again whenever you're ready.";
+  }
+});
+
+/* MEMORY SLIDESHOW WITH CUSTOM STEP IMAGES & DIALOGUES */
+const memories = [
+  {
+    chapter: "A little memory",
+    title: "Love never really leaves.",
+    text: "Some people make the world feel softer just by being in it. Their love becomes part of the way we speak, the way we care, and the courage we find when life changes.",
+    sign: "With all my love, always ♡",
+    image: "image1.png",
+    pattiCloud: "En chellakutty… enakku romba sandhosham da. Nee saadhichitta! Un mela enakku eppovume nambikkai irundhuchu... enaku theriyum da, unakku kidachirum nu!"
+  },
+  {
+    chapter: "A quiet promise",
+    title: "You are never walking alone.",
+    text: "On the days you feel unsure, remember how deeply you are loved. Take one step, then another. You do not have to have every answer today.",
+    sign: "One day at a time, kanna ♡",
+    image: "image2.png",
+    pattiCloud: "Eppovum santhoshama iru. Un vaazhkaila nalla vishayangal nadakkattum. Unakku nalla velai, nalla aarokkiyam, nimmadhi, anbu ellame kidaikkattum."
+  },
+  {
+    chapter: "A wish for your heart",
+    title: "May your hard work bloom.",
+    text: "May the doors ahead open gently. May your effort bring you beautiful opportunities, and may you always meet kind people who value the goodness in you.",
+    sign: "I am cheering for you in every memory ♡",
+    image: "image3.png",
+    pattiCloud: "Nee ninaikkira ella nalla kanavugalum nijamaagattum. Naan eppovum unakku kodutha anbum, aasigalum un kooda irukkum, en chellam!"
+  },
+  {
+    chapter: "For all the tomorrows",
+    title: "Keep becoming your beautiful self.",
+    text: "Celebrate the little wins. Rest when you are tired. Be brave enough to begin again. Whenever something wonderful happens, let your heart remember the love that helped shape you.",
+    sign: "Love, always and forever ♡",
+    image: "image4.png",
+    pattiCloud: "En thangathukku eppavum nalladhe nadakkum... naan koodave irupen! unaku elaame ini sandhosham dhaan...full happy dhaan en thangathuku!"
+  }
+];
+
+let step = 0;
+
+function renderStep() {
+  const memory = memories[step];
+
+  document.getElementById("chapter").textContent = memory.chapter;
+  document.getElementById("memoryTitle").textContent = memory.title;
+  document.getElementById("memoryText").textContent = memory.text;
+  document.getElementById("signature").textContent = memory.sign;
+  document.getElementById("memoryImage").src = memory.image;
+  document.getElementById("cloudMessageDisplay").textContent = `"${memory.pattiCloud}"`;
+
+  document.getElementById("progressFill").style.width =
+    ((step + 1) / memories.length * 100) + "%";
+
+  document.getElementById("continueBtn").textContent =
+    step === memories.length - 1 ? "One last wish ✧" : "Continue →";
+
+  document.getElementById("finale").style.display = "none";
+}
+
+document.getElementById("continueBtn").addEventListener("click", () => {
+  if (step < memories.length - 1) {
+    step++;
+    renderStep();
+    document.querySelector("#journey .panel").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  } else {
+    document.getElementById("journey").querySelector(".panel").style.display = "none";
+    document.getElementById("finale").style.display = "block";
+    document.getElementById("finale").scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+    makeConfetti();
+  }
+});
+
+document.getElementById("replayBtn").addEventListener("click", () => {
+  step = 0;
+  document.getElementById("journey").querySelector(".panel").style.display = "block";
+  renderStep();
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
+/* PATTI AI RESPONSE IN RANDOM FLOATING POSITIONS */
+document.getElementById("sendToPattiBtn").addEventListener("click", () => {
+  const input = document.getElementById("pattiMessageInput");
+  const val = input.value.trim().toLowerCase();
+
+  if (!val) return;
+
+  input.value = "";
+
+  let replyText = "";
+  if (val.includes("placed") || val.includes("placement") || val.includes("job") || val.includes("kidachiruchu") || val.includes("aayitten") || val.includes("vela")) {
+    replyText = `"En chellakutty romba perumai paduthura! Paatioda aasee vadham eppovum unakku undu da!" ♡`;
+  } else if (val.includes("miss") || val.includes("sad") || val.includes("alone") || val.includes("cry")) {
+    replyText = `"Alavadha en kannu! Naan engaiyum pogala, un nenjulaum andha vanna vanna natchathirathulaum dhaan irukken!" ♡`;
+  } else {
+    replyText = `"Kettaen da chellam! Romba nalla iru, nalla vaalndhu saadhichu kaattu!" ♡`;
+  }
+
+  const replyBubble = document.createElement("div");
+  replyBubble.className = "random-patti-reply";
+  replyBubble.textContent = replyText;
+
+  const topPos = Math.floor(Math.random() * 55) + 20;
+  const leftPos = Math.floor(Math.random() * 50) + 15;
+
+  replyBubble.style.top = topPos + "%";
+  replyBubble.style.left = leftPos + "%";
+
+  document.body.appendChild(replyBubble);
+
+  setTimeout(() => {
+    replyBubble.remove();
+  }, 7000);
+});
+
+/* FINAL CELEBRATION */
+function makeConfetti() {
+  const colors = ["#f8e2ad", "#d7c4ff", "#fff8ef", "#b8c9ff"];
+
+  for (let i = 0; i < 65; i++) {
+    const piece = document.createElement("i");
+    piece.className = "confetti";
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 1.5 + "s";
+    piece.style.animationDuration = 3 + Math.random() * 3 + "s";
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 7000);
+  }
+}
+</script>
+</body>
+</html>
